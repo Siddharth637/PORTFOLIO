@@ -1,11 +1,11 @@
-/* =================================================================
-   PAPAI CHATRI — PORTFOLIO SCRIPT
-   Navbar state, mobile menu, scrollspy, back-to-top, contact form
-   ================================================================= */
-
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ---------- Navbar scroll state + back-to-top visibility ---------- */
+
+
+  // NAVBAR SCROLL
+  
+  
+  
   const navbar = document.getElementById('navbar');
   const backToTop = document.getElementById('backToTop');
 
@@ -20,7 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* ---------- Mobile menu ---------- */
+  
+  
+  // MOBILE MENU
+
+
+
   const navToggle = document.getElementById('navToggle');
   const navMenu = document.getElementById('navMenu');
   const navBackdrop = document.getElementById('navBackdrop');
@@ -45,7 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
   navBackdrop.addEventListener('click', closeMenu);
   navMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
 
-  /* ---------- Scrollspy: highlight the nav link for the visible section ---------- */
+
+
+  //SCROLL
+  
+  
+  
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
 
@@ -61,49 +71,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
   sections.forEach(section => spyObserver.observe(section));
 
-  /* ---------- Contact form ---------- */
+
+
+  // CONTACT
+  
+  
+  
   const form = document.getElementById('contactForm');
-  const status = document.getElementById('formStatus');
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const status = document.getElementById('formStatus');
 
-  const showStatus = (message, type) => {
-    status.textContent = message;
-    status.className = `form-status ${type}`;
-  };
+const showStatus = (message, type) => {
+  status.textContent = message;
+  status.className = `form-status ${type}`;
+};
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
 
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const message = form.message.value.trim();
+  const name = form.name.value.trim();
+  const email = form.email.value.trim();
+  const message = form.message.value.trim();
 
-    if (!name || !email || !message) {
-      showStatus('Please fill in every field before sending.', 'error');
-      return;
-    }
-    if (!emailPattern.test(email)) {
-      showStatus('Please enter a valid email address.', 'error');
-      return;
-    }
+  
+  if (!name || !email || !message) {
+    showStatus('Please fill in every field before sending.', 'error');
+    return;
+  }
 
-    // NOTE: This form is front-end only. To actually deliver messages,
-    // connect it to a form backend such as Formspree, EmailJS, or Netlify
-    // Forms, and replace the block below with that service's submit call.
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalLabel = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalLabel = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Opening email...';
 
-    setTimeout(() => {
-      showStatus('Thank you — your message has been sent.', 'success');
-      form.reset();
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalLabel;
-    }, 800);
-  });
+ 
+  const recipientEmail = 'papaichetri80@gmail.com';
 
-  /* ---------- Footer year ---------- */
+ 
+  const subject = encodeURIComponent(`Portfolio Contact: Message from ${name}`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+
+  // Trigger the mailto client
+  const mailtoLink = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
+  window.location.href = mailtoLink;
+
+ 
+  setTimeout(() => {
+    showStatus('Email client opened successfully.', 'success');
+    form.reset();
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalLabel;
+  }, 800);
+});
+
+
+  
   document.getElementById('year').textContent = new Date().getFullYear();
 
 });
